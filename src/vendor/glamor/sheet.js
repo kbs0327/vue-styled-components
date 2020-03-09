@@ -122,13 +122,27 @@ export class StyleSheet {
         this._insert(rule)
       }
       else{
-        const textNode = document.createTextNode(rule)
-        last(this.tags).appendChild(textNode)
-        insertedRule = { textNode, appendRule: newCss => textNode.appendData(newCss)}
+        const textNode = document.createTextNode(rule);
+        const tag = last(this.tags);
+        tag.appendChild(textNode);
+        insertedRule = { textNode: textNode, appendRule: function appendRule(newCss) {
+          if (!newCss) {
+            return;
+          }
+          // AngularJS는 전체 Node를 떼었다가 붙이는데, IE에서 이 때 Node Reference가 사라지는 문제가 발생하여 예외처리
+          if (!tag.childNodes) {
+            const newTextNode = document.createTextNode(newCss);
+            return tag.appendChild(newTextNode);
+          }
+          if (tag.childNodes.indexOf(textNode) !== -1) {
+            return textNode.appendData(newCss);
+          }
+          return last(tag.childNodes).appendData(newCss);
+          } };
 
-        if(!this.isSpeedy) {
+        if (!this.isSpeedy) {
           // sighhh
-          this.sheet = sheetForTag(last(this.tags))
+          this.sheet = sheetForTag(last(this.tags));
         }
       }
     }
