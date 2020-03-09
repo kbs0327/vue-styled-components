@@ -130,7 +130,7 @@ export class StyleSheet {
             return;
           }
           // AngularJS는 전체 Node를 떼었다가 붙이는데, IE에서 이 때 Node Reference가 사라지는 문제가 발생하여 예외처리
-          if (!tag.childNodes) {
+          if (!tag.childNodes || tag.childNodes.length === 0) {
             const newTextNode = document.createTextNode(newCss);
             return tag.appendChild(newTextNode);
           }
