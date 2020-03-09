@@ -134,9 +134,6 @@ export class StyleSheet {
             const newTextNode = document.createTextNode(newCss);
             return tag.appendChild(newTextNode);
           }
-          if (tag.childNodes.indexOf(textNode) !== -1) {
-            return textNode.appendData(newCss);
-          }
           return last(tag.childNodes).appendData(newCss);
           } };
 
