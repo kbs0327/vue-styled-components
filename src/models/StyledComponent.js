@@ -30,9 +30,11 @@ export default (ComponentStyle) => {
             class: [this.generatedClassName],
             props: this.$props,
             domProps: {
+              ...this.$attrs,
               value: this.value
             },
             on: {
+              ...this.$listeners,
               input: (event) => {
                 if (event.target) {
                   this.$emit('input', event.target.value)
